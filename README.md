@@ -26,3 +26,9 @@ Un exemple de ligne de commande :
 A noter que vous pouvez télécharger le dossier en entier et utilisez les dossier */md*, */html*, et */template* qui sont déjà en paramètres par défaut. Votre commande serait donc simplement :  
   
 `python .\programme.py convert`
+
+## Eléments requis
+Pour utiliser des templates, il est indispensable de modifier certaines lignes nous-mêmes dans les modèles à complèter :
+* placer un `REPLACE-ME` dans le *body* du modèle html, c'est là que le html généré va s'insèrer
+* placer un `TITLE`entre les balises de titres si vous souhaitez voir le nom du fichier markdown comme titre du site statique
+* placer `<link rel="stylesheet" href=STYLE>` dans le *head* pour lié le modèle html au modèle CSS (qui porte le même nom)

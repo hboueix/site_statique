@@ -2,6 +2,10 @@
 # Lecture du contenu du md
 
 def lecture(fichier): # fichier = pathlib
+    '''
+    Cette fonction permet de lire le fichier markdon passé en paramètre.
+    Elle renvoie un liste des lignes contenues dans ce fichier.
+    '''
     lignes = list()
     with fichier.open() as f:
         contenu = f.read()
@@ -15,6 +19,11 @@ def lecture(fichier): # fichier = pathlib
 # Conversion du md vers html
 
 def conversion(lignes): # lignes = liste
+    '''
+    Cette fonction va parcourir une liste de lignes.
+    Elle déterminera s'il faut modifier ces lignes en les regardant une par une.
+    Elle renvoie une liste de lignes modifiées, soit converties en html.
+    '''
     global nb_li
     nb_li = 0 # Nb de balises <li>
     lignes_modif = list()
@@ -66,8 +75,6 @@ def conversion(lignes): # lignes = liste
             if l[:7] == 'http://' or l[:8] == 'https://':
                 mots[i] = '<a href="' + mots[i] + '">' + mots[i] + '</a>'
         ligne = ' '.join(mots) + '\n'
-            
-        print(mots)
 
         # Emphase
         if ligne.count('*') % 2 == 0:
@@ -85,6 +92,10 @@ def conversion(lignes): # lignes = liste
 # Création des fichiers html
 
 def ecriture(chemin, contenu, template):
+    '''
+    Cette fonction écrit la chaîne de caractère 'contenu' dans des fichiers html générés à partir des templates.
+    Pour chaque fichier elle va généré un fichier html pour chacun des templates.
+    '''
     modele = ''
     with open(template, 'r') as f:
         modele = f.read()
@@ -94,6 +105,7 @@ def ecriture(chemin, contenu, template):
         contenu = contenu.replace('href=STYLE', 'href=".' + template[:-4] + 'css"')
     list_temp = template.split('/')
     nom_temp = list_temp[-1]
-    with open(chemin + '_' + nom_temp, 'w') as f:
+    nom_html = chemin + '_' + nom_temp
+    with open(nom_html, 'w') as f:
        f.write(contenu)
-    print(chemin + '_' + nom_temp)
+    print(f'Le fichier {nom_html} a été créé !')

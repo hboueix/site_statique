@@ -22,10 +22,14 @@ if args.template_directory:
 
 p = Path('.')
 files_md = sorted(p.glob(args.input_directory + '/*.md'))
+files_temp = sorted(p.glob(args.template_directory + '/*.html'))
 
 for md in files_md:
     lignes = lecture(md)
     lignes_modif = conversion(lignes)
-    chemin = args.output_directory + '/' + str(md)[3:-3] + '.html'
-    ecriture(chemin, lignes_modif)
+    contenu = ('\n').join(lignes_modif)
+    chemin = args.output_directory + '/' + str(md)[3:-3]
+    for temp in files_temp:
+        template = './' + ('/').join(str(temp).split('\\'))
+        ecriture(chemin, contenu, template)
     

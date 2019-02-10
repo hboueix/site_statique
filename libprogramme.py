@@ -23,38 +23,58 @@ def conversion(lignes): # lignes = liste
     for ligne in lignes:
         n = 0
 
+        while ligne[n] == ' ':
+            try:
+                ligne[n + 1]
+                n += 1
+            except IndexError:
+                continue
+        ligne = ligne[n:]
+        n = 0
+       
         # Titres
         if ligne[n] == '#':
-            while ligne[n] == '#':
-                n += 1
-            ligne = ligne.replace(c[:n], '<h' + str(n) + '>', 1)
-            ligne += '</h' + str(n) + '>'
+            n_c = n
+            while ligne[n_c] == '#':
+                n_c += 1
+            n_c -= n
+            ligne = ligne.replace(c[:n_c], '<h' + str(n_c) + '>', 1)
+            ligne += '</h' + str(n_c) + '>'
         
         # Listes
         elif ligne[n] == '*':
             if ligne.count('*') % 2 != 0:
                 nb_li += 1
                 if nb_li == 1:
-                    ligne = '<ul><li>' + ligne[1:] + '</li>'
+                    ligne = '<ul><li> ' + ligne[1:] + ' </li>'
                 else:
-                    ligne = '<li>' + ligne[1:] + '</li>'
+                    ligne = '<li> ' + ligne[1:] + ' </li>'
                 try:
-                    if lignes[n_ligne + 1][0] != '*':
-                        ligne += '</ul>'
+                    ind = 0
+                    while lignes[n_ligne + 1][ind] == ' ':
+                        ind += 1
+                    if lignes[n_ligne + 1][ind] != '*':
+                        ligne += ' </ul>'
                         nb_li = 0
                 except IndexError:
-                    ligne += '</ul>'
+                    ligne += ' </ul>'
                     nb_li = 0
 
         # URL
-
+        mots = ligne.split(' ')
+        for i, l in enumerate(mots):
+            if l[:7] == 'http://' or l[:8] == 'https://':
+                mots[i] = '<a href="' + mots[i] + '">' + mots[i] + '</a>'
+        ligne = ' '.join(mots) + '\n'
+            
+        print(mots)
 
         # Emphase
-
-
-        # Paragraphes
-        else:
-            ligne = '<p>' + ligne + '</p>'
+        if ligne.count('*') % 2 == 0:
+            while '*' in ligne:
+                ligne = ligne.replace('*', '<em>', 1)
+                ligne = ligne.replace ('*', '</em>', 1)      
+        
         
         lignes_modif.append(ligne)
 
@@ -64,7 +84,16 @@ def conversion(lignes): # lignes = liste
 
 # Création des fichiers html
 
-def ecriture(chemin, contenu):
-    print(chemin)
-    with open(chemin, 'w') as f:
-       f.write(('\n').join(contenu))
+def ecriture(chemin, contenu, template):
+    modele = ''
+    with open(template, 'r') as f:
+        modele = f.read()
+        # Requirements
+        contenu = modele.replace('REPLACE-ME', contenu, 1) 
+        contenu = contenu.replace('TITLE', chemin.split('/')[-1])
+        contenu = contenu.replace('href=STYLE', 'href=".' + template[:-4] + 'css"')
+    list_temp = template.split('/')
+    nom_temp = list_temp[-1]
+    with open(chemin + '_' + nom_temp, 'w') as f:
+       f.write(contenu)
+    print(chemin + '_' + nom_temp)

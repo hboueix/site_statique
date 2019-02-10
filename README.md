@@ -19,8 +19,10 @@ Pour ce faire, nous avons réaliser un outil en ligne de commande. Il prend plus
 ## Rendu sur Github
 Dans ce repository vous trouverez un fichiers `libprogramme.py` contenant les fonctions utiles pour notre outil et un fichier `programme.py` qui utilise donc ces fonctions. C'est ce dernier fichier qu'il faut appeler avec les paramètres pour lancer notre outil.  
   
-Un exemple de ligne de commande :
+Un exemple de ligne de commande :  
+  
 `python .\programme.py --input-directory ./dossier_md -o ./dossier_html -t ./dossier_template`  
   
-A noter que vous pouvez télécharger le dossier en entier et utilisez les dossier */md*, */html*, et */template* qui sont déjà en paramètres par défaut. Votre commande serait donc simplement :
+A noter que vous pouvez télécharger le dossier en entier et utilisez les dossier */md*, */html*, et */template* qui sont déjà en paramètres par défaut. Votre commande serait donc simplement :  
+  
 `python .\programme.py convert`
